@@ -1,4 +1,4 @@
-package com.example.flagquiz.domain.model
+package com.lavaegg.flagquiz.domain.model
 
 enum class GameRegion(
     val title: String,
@@ -12,3 +12,4 @@ enum class GameRegion(
     SOUTH_AMERICA("South America", "Guess flags from South America"),
     OCEANIA("Australia", "Play with Australia and nearby Pacific nations")
 }
+

@@ -1,13 +1,13 @@
-package com.example.flagquiz.ui.viewmodel
+package com.lavaegg.flagquiz.ui.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.example.flagquiz.data.FlagDataSource
-import com.example.flagquiz.data.ScoreRepository
-import com.example.flagquiz.domain.model.FlagQuestion
-import com.example.flagquiz.domain.model.GameRegion
-import com.example.flagquiz.navigation.AppScreen
-import com.example.flagquiz.ui.state.FlagQuizUiState
+import com.lavaegg.flagquiz.data.FlagDataSource
+import com.lavaegg.flagquiz.data.ScoreRepository
+import com.lavaegg.flagquiz.domain.model.FlagQuestion
+import com.lavaegg.flagquiz.domain.model.GameRegion
+import com.lavaegg.flagquiz.navigation.AppScreen
+import com.lavaegg.flagquiz.ui.state.FlagQuizUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -143,3 +143,4 @@ class FlagQuizViewModel(application: Application) : AndroidViewModel(application
         return (score.toFloat() / totalQuestions.toFloat() * 100).roundToInt()
     }
 }
+

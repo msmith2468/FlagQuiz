@@ -1,4 +1,4 @@
-package com.example.flagquiz.ui.screen
+package com.lavaegg.flagquiz.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.domain.model.GameRegion
+import com.lavaegg.flagquiz.domain.model.GameRegion
 
 private data class RegionCardStyle(
     val containerColor: Color,
@@ -205,4 +205,5 @@ private fun regionCardStyle(score: Int?): RegionCardStyle {
         )
     }
 }
+
 

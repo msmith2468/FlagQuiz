@@ -1,4 +1,4 @@
-package com.example.flagquiz.ui.screen
+package com.lavaegg.flagquiz.ui.screen
 
 import android.content.Context
 import androidx.compose.foundation.Canvas
@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.domain.model.GameRegion
+import com.lavaegg.flagquiz.domain.model.GameRegion
 import org.json.JSONObject
 import kotlin.math.abs
 
@@ -279,4 +279,5 @@ private fun polygonArea(points: List<GeoPoint>): Double {
     }
     return abs(area) / 2.0
 }
+
 

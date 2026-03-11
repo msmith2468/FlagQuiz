@@ -1,4 +1,4 @@
-package com.example.flagquiz.ui.theme
+package com.lavaegg.flagquiz.ui.theme
 
 import android.app.Activity
 import android.os.Build

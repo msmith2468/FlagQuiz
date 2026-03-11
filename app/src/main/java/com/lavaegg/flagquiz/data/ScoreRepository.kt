@@ -1,7 +1,7 @@
-package com.example.flagquiz.data
+package com.lavaegg.flagquiz.data
 
 import android.content.Context
-import com.example.flagquiz.domain.model.GameRegion
+import com.lavaegg.flagquiz.domain.model.GameRegion
 
 class ScoreRepository(context: Context) {
     private val preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -29,3 +29,4 @@ class ScoreRepository(context: Context) {
         const val PREFS_NAME = "flag_quiz_scores"
     }
 }
+

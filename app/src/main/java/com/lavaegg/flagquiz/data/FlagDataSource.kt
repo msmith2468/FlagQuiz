@@ -1,7 +1,7 @@
-package com.example.flagquiz.data
+package com.lavaegg.flagquiz.data
 
-import com.example.flagquiz.domain.model.FlagEntry
-import com.example.flagquiz.domain.model.GameRegion
+import com.lavaegg.flagquiz.domain.model.FlagEntry
+import com.lavaegg.flagquiz.domain.model.GameRegion
 
 object FlagDataSource {
     val flagEntries = listOf(
@@ -105,3 +105,4 @@ object FlagDataSource {
         FlagEntry("Zimbabwe", "\uD83C\uDDFF\uD83C\uDDFC", GameRegion.AFRICA)
     )
 }
+

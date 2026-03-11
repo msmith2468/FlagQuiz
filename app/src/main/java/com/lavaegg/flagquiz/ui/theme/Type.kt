@@ -1,4 +1,4 @@
-package com.example.flagquiz.ui.theme
+package com.lavaegg.flagquiz.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
