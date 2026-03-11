@@ -1,4 +1,4 @@
-package com.example.flagquiz.ui.screen
+package com.lavaegg.flagquiz.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.ui.state.FlagQuizUiState
+import com.lavaegg.flagquiz.ui.state.FlagQuizUiState
 import kotlin.math.roundToInt
 
 private val CorrectAnswerGreen = Color(0xFF2E7D32)
@@ -218,4 +218,5 @@ fun FlagQuizGameScreen(
         }
     }
 }
+
 

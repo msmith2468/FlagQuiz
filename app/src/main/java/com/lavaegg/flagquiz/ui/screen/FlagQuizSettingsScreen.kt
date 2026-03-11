@@ -1,4 +1,4 @@
-package com.example.flagquiz.ui.screen
+package com.lavaegg.flagquiz.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -40,7 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.R
+import com.lavaegg.flagquiz.R
 
 @Composable
 fun FlagQuizSettingsScreen(
@@ -176,4 +176,5 @@ fun FlagQuizSettingsScreen(
         }
     }
 }
+
 

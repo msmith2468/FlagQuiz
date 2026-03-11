@@ -1,4 +1,4 @@
-package com.example.flagquiz
+package com.lavaegg.flagquiz
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,13 +10,13 @@ import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.flagquiz.navigation.AppScreen
-import com.example.flagquiz.ui.screen.FlagQuizGameScreen
-import com.example.flagquiz.ui.screen.FlagQuizHomeScreen
-import com.example.flagquiz.ui.screen.FlagQuizSettingsScreen
-import com.example.flagquiz.ui.screen.RegionBadgeCache
-import com.example.flagquiz.ui.theme.FlagQuizTheme
-import com.example.flagquiz.ui.viewmodel.FlagQuizViewModel
+import com.lavaegg.flagquiz.navigation.AppScreen
+import com.lavaegg.flagquiz.ui.screen.FlagQuizGameScreen
+import com.lavaegg.flagquiz.ui.screen.FlagQuizHomeScreen
+import com.lavaegg.flagquiz.ui.screen.FlagQuizSettingsScreen
+import com.lavaegg.flagquiz.ui.screen.RegionBadgeCache
+import com.lavaegg.flagquiz.ui.theme.FlagQuizTheme
+import com.lavaegg.flagquiz.ui.viewmodel.FlagQuizViewModel
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -73,3 +73,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+

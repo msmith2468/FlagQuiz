@@ -1,8 +1,8 @@
-package com.example.flagquiz.ui.state
+package com.lavaegg.flagquiz.ui.state
 
-import com.example.flagquiz.domain.model.FlagQuestion
-import com.example.flagquiz.domain.model.GameRegion
-import com.example.flagquiz.navigation.AppScreen
+import com.lavaegg.flagquiz.domain.model.FlagQuestion
+import com.lavaegg.flagquiz.domain.model.GameRegion
+import com.lavaegg.flagquiz.navigation.AppScreen
 
 data class FlagQuizUiState(
     val currentScreen: AppScreen = AppScreen.HOME,
@@ -17,3 +17,4 @@ data class FlagQuizUiState(
     val savedScores: Map<GameRegion, Int?> = emptyMap(),
     val regionCounts: Map<GameRegion, Int> = emptyMap()
 )
+

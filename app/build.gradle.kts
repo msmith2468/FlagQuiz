@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.flagquiz"
+    namespace = "com.lavaegg.flagquiz"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.flagquiz"
+        applicationId = "com.lavaegg.flagquiz"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -60,3 +60,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
