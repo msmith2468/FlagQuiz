@@ -25,7 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.FlagQuizUiState
+import com.example.flagquiz.ui.state.FlagQuizUiState
+import kotlin.math.roundToInt
 
 private val CorrectAnswerGreen = Color(0xFF2E7D32)
 
@@ -34,9 +35,15 @@ fun FlagQuizGameScreen(
     uiState: FlagQuizUiState,
     onAnswerSelected: (String) -> Unit,
     onNextFlag: () -> Unit,
-    onExitGame: () -> Unit
+    onExitGame: () -> Unit,
+    onPlayAgain: () -> Unit
 ) {
     val currentQuestion = uiState.currentQuestion ?: return
+    val scorePercentage = if (uiState.totalQuestions == 0) {
+        0
+    } else {
+        (uiState.score.toFloat() / uiState.totalQuestions.toFloat() * 100).roundToInt()
+    }
     val resultText = when (uiState.selectedAnswer) {
         null -> "Pick the country that matches the flag."
         currentQuestion.correctCountry -> "Correct!"
@@ -66,7 +73,7 @@ fun FlagQuizGameScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Row {
                 Text(
-                    text = "Round ${uiState.round}",
+                    text = if (uiState.isGameComplete) "Finished" else "Flag ${uiState.currentQuestionIndex + 1} of ${uiState.totalQuestions}",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.width(16.dp))
@@ -76,90 +83,139 @@ fun FlagQuizGameScreen(
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+
+            if (uiState.isGameComplete) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Round Complete",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "You got ${uiState.score} out of ${uiState.totalQuestions} correct.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Final score: $scorePercentage%",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+                Row {
+                    OutlinedButton(onClick = onExitGame) {
+                        Text(text = "Main Menu")
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Button(onClick = onPlayAgain) {
+                        Text(text = "Play Again")
+                    }
+                }
+            } else {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Which country does this flag belong to?",
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text(
+                            text = currentQuestion.flagEmoji,
+                            style = MaterialTheme.typography.displayLarge
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+
+                currentQuestion.options.forEach { option ->
+                    val isSelected = uiState.selectedAnswer == option
+                    val isCorrect = option == currentQuestion.correctCountry
+                    val buttonColors = when {
+                        uiState.selectedAnswer == null -> ButtonDefaults.buttonColors()
+                        isCorrect -> ButtonDefaults.buttonColors(
+                            containerColor = CorrectAnswerGreen,
+                            contentColor = Color.White,
+                            disabledContainerColor = CorrectAnswerGreen,
+                            disabledContentColor = Color.White
+                        )
+                        isSelected -> ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error,
+                            contentColor = MaterialTheme.colorScheme.onError,
+                            disabledContainerColor = MaterialTheme.colorScheme.error,
+                            disabledContentColor = MaterialTheme.colorScheme.onError
+                        )
+                        else -> ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
+
+                    Button(
+                        onClick = { onAnswerSelected(option) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        colors = buttonColors
+                    ) {
+                        Text(
+                            text = option,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                Text(
+                    text = resultText,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
                 )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "Which country does this flag belong to?",
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = currentQuestion.flagEmoji,
-                        style = MaterialTheme.typography.displayLarge
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(24.dp))
-
-            currentQuestion.options.forEach { option ->
-                val isSelected = uiState.selectedAnswer == option
-                val isCorrect = option == currentQuestion.correctCountry
-                val buttonColors = when {
-                    uiState.selectedAnswer == null -> ButtonDefaults.buttonColors()
-                    isCorrect -> ButtonDefaults.buttonColors(
-                        containerColor = CorrectAnswerGreen,
-                        contentColor = Color.White,
-                        disabledContainerColor = CorrectAnswerGreen,
-                        disabledContentColor = Color.White
-                    )
-                    isSelected -> ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.error,
-                        contentColor = MaterialTheme.colorScheme.onError,
-                        disabledContainerColor = MaterialTheme.colorScheme.error,
-                        disabledContentColor = MaterialTheme.colorScheme.onError
-                    )
-                    else -> ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                }
-
-                Button(
-                    onClick = { onAnswerSelected(option) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    colors = buttonColors
-                ) {
-                    Text(
-                        text = option,
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-            }
-
-            Text(
-                text = resultText,
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row {
-                OutlinedButton(onClick = onExitGame) {
-                    Text(text = "Main Menu")
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                Button(
-                    onClick = onNextFlag,
-                    enabled = uiState.selectedAnswer != null
-                ) {
-                    Text(text = "Next Flag")
+                Spacer(modifier = Modifier.height(16.dp))
+                Row {
+                    OutlinedButton(onClick = onExitGame) {
+                        Text(text = "Main Menu")
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Button(
+                        onClick = onNextFlag,
+                        enabled = uiState.selectedAnswer != null
+                    ) {
+                        Text(text = if (uiState.currentQuestionIndex == uiState.totalQuestions - 1) "Finish" else "Next Flag")
+                    }
                 }
             }
         }
     }
 }
+
