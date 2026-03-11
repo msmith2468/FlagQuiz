@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.FlagQuizUiState
+import com.example.flagquiz.ui.state.FlagQuizUiState
 import kotlin.math.roundToInt
 
 private val CorrectAnswerGreen = Color(0xFF2E7D32)
@@ -88,7 +88,8 @@ fun FlagQuizGameScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 ) {
                     Column(
@@ -131,7 +132,8 @@ fun FlagQuizGameScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 ) {
                     Column(
@@ -216,3 +218,4 @@ fun FlagQuizGameScreen(
         }
     }
 }
+

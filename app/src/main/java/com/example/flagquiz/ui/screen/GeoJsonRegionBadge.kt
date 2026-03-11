@@ -15,27 +15,33 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.GameRegion
+import com.example.flagquiz.domain.model.GameRegion
 import org.json.JSONObject
 import kotlin.math.abs
 
-private data class GeoPoint(val lon: Double, val lat: Double)
-private data class GeoShape(val rings: List<List<GeoPoint>>)
-private data class ShapeBounds(
+internal data class GeoPoint(val lon: Double, val lat: Double)
+internal data class GeoShape(val rings: List<List<GeoPoint>>)
+internal data class ShapeBounds(
     val minLon: Double,
     val maxLon: Double,
     val minLat: Double,
     val maxLat: Double
 )
-private data class BadgeRegionData(
+internal data class BadgeRegionData(
     val shapes: List<GeoShape>,
     val bounds: ShapeBounds
 )
 
-private object RegionBadgeCache {
+object RegionBadgeCache {
     private val cache = mutableMapOf<GameRegion, BadgeRegionData>()
 
-    fun getOrLoad(context: Context, region: GameRegion): BadgeRegionData = synchronized(cache) {
+    fun preloadAll(context: Context) {
+        GameRegion.entries.forEach { region ->
+            load(context, region)
+        }
+    }
+
+    internal fun load(context: Context, region: GameRegion): BadgeRegionData = synchronized(cache) {
         cache.getOrPut(region) {
             val shapes = loadRegionShapes(context, region.assetName())
                 .map { it.simplified(region.simplifyTolerance()) }
@@ -51,7 +57,7 @@ private object RegionBadgeCache {
 @Composable
 fun GeoJsonRegionBadge(region: GameRegion) {
     val context = LocalContext.current
-    val regionData = remember(region) { RegionBadgeCache.getOrLoad(context, region) }
+    val regionData = remember(region) { RegionBadgeCache.load(context, region) }
     val background = when (region) {
         GameRegion.WORLD -> Color(0xFFD7F0FF)
         GameRegion.AFRICA -> Color(0xFFFFE5B4)
@@ -273,3 +279,4 @@ private fun polygonArea(points: List<GeoPoint>): Double {
     }
     return abs(area) / 2.0
 }
+

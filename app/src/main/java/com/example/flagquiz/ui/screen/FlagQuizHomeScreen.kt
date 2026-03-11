@@ -1,5 +1,6 @@
 package com.example.flagquiz.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
@@ -24,9 +26,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.flagquiz.GameRegion
+import com.example.flagquiz.domain.model.GameRegion
+
+private data class RegionCardStyle(
+    val containerColor: Color,
+    val contentColor: Color,
+    val scoreLabel: String,
+    val showPerfectBadge: Boolean
+)
 
 @Composable
 fun FlagQuizHomeScreen(
@@ -77,10 +87,13 @@ fun FlagQuizHomeScreen(
             items(GameRegion.entries) { region ->
                 val savedScore = savedScores[region]
                 val flagCount = regionCounts[region] ?: 0
+                val cardStyle = regionCardStyle(savedScore)
+
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = cardStyle.containerColor,
+                        contentColor = cardStyle.contentColor
                     )
                 ) {
                     Column(
@@ -95,11 +108,19 @@ fun FlagQuizHomeScreen(
                         ) {
                             GeoJsonRegionBadge(region = region)
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = region.title,
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Text(
+                                        text = region.title,
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                    if (cardStyle.showPerfectBadge) {
+                                        PerfectScoreBadge()
+                                    }
+                                }
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
                                     text = region.subtitle,
@@ -115,7 +136,7 @@ fun FlagQuizHomeScreen(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = savedScore?.let { "Saved score: $it%" } ?: "Saved score: Not played yet",
+                            text = cardStyle.scoreLabel,
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium
                         )
@@ -132,3 +153,56 @@ fun FlagQuizHomeScreen(
         }
     }
 }
+
+@Composable
+private fun PerfectScoreBadge() {
+    Text(
+        text = "PERFECT",
+        modifier = Modifier
+            .background(Color(0xFFFFD54F), RoundedCornerShape(999.dp))
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+        color = Color(0xFF5D4037),
+        style = MaterialTheme.typography.labelMedium,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+private fun regionCardStyle(score: Int?): RegionCardStyle {
+    return when {
+        score == null -> RegionCardStyle(
+            containerColor = Color(0xFF1E88E5),
+            contentColor = Color.White,
+            scoreLabel = "Saved score: Not played yet",
+            showPerfectBadge = false
+        )
+
+        score == 100 -> RegionCardStyle(
+            containerColor = Color(0xFF2E7D32),
+            contentColor = Color.White,
+            scoreLabel = "Saved score: 100%",
+            showPerfectBadge = true
+        )
+
+        score < 50 -> RegionCardStyle(
+            containerColor = Color(0xFFC62828),
+            contentColor = Color.White,
+            scoreLabel = "Saved score: $score%",
+            showPerfectBadge = false
+        )
+
+        score < 80 -> RegionCardStyle(
+            containerColor = Color(0xFFF9A825),
+            contentColor = Color(0xFF1F1F1F),
+            scoreLabel = "Saved score: $score%",
+            showPerfectBadge = false
+        )
+
+        else -> RegionCardStyle(
+            containerColor = Color(0xFF2E7D32),
+            contentColor = Color.White,
+            scoreLabel = "Saved score: $score%",
+            showPerfectBadge = false
+        )
+    }
+}
+
