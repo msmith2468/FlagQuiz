@@ -11,6 +11,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flagquiz.navigation.AppScreen
+import com.example.flagquiz.ui.screen.CountryOutlineCache
 import com.example.flagquiz.ui.screen.FlagQuizGameScreen
 import com.example.flagquiz.ui.screen.FlagQuizHomeScreen
 import com.example.flagquiz.ui.screen.FlagQuizSettingsScreen
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch(Dispatchers.Default) {
             runCatching {
                 RegionBadgeCache.preloadAll(applicationContext)
+                CountryOutlineCache.preloadAll(applicationContext)
             }
             isSplashReady.set(true)
         }
@@ -65,6 +67,10 @@ class MainActivity : ComponentActivity() {
                     AppScreen.HOME -> FlagQuizHomeScreen(
                         savedScores = uiState.savedScores,
                         regionCounts = uiState.regionCounts,
+                        selectedGameMode = uiState.selectedGameMode,
+                        selectedDifficulty = uiState.selectedDifficulty,
+                        onSelectGameMode = flagQuizViewModel::selectGameMode,
+                        onSelectDifficulty = flagQuizViewModel::selectDifficulty,
                         onStartGame = flagQuizViewModel::startGame,
                         onOpenSettings = flagQuizViewModel::openSettings
                     )
